@@ -4,6 +4,7 @@
  *
  * @author Andreas Demetriou <androsland@gmail.com>
  */
+ 
 class EntryPathTest extends ezcArchiveTestCase {
 
 	/**
@@ -15,16 +16,20 @@ class EntryPathTest extends ezcArchiveTestCase {
 	 *
 	 */
 	public function test_entry_path() {
-		$dir = dirname(__FILE__) . "/data";
+		// $dir = dirname(__FILE__) . "/data";
+		$this->createTempDir( "entryPath-", sys_get_temp_dir ()  );
+		$dir = $this->getTempDir();
+		
 		$archive = ezcArchive::open(dirname(__FILE__) . "/data/images.tar.gz");
 		try {
 			$archive -> extract($dir);
 		} catch (Exception $e) {// even if an exception is caught (e.g. file_exists) try to see if the files are extracted
 		}
-		$this -> assertTrue(file_exists("$dir/testing/naming/including/inner/module/files/purpose/helper/jquery-ui-bootstrap/images/ui-bg_flat_0_aaaaaa_40x100.png"));
-		$this -> assertTrue(file_exists("$dir/testing/naming/including/inner/module/files/purpose/helper/jquery-ui-bootstrap/images/ui-bg_highlight-soft_75_cccccc_1x100.png"));
-		$this -> assertTrue(file_exists("$dir/testing/naming/including/inner/module/files/purpose/helper/jquery-ui-bootstrap/images/ui-bg_inset-soft_95_fef1ec_1x100.png"));
-
+		clearstatcache();
+		$this->assertTrue(file_exists("$dir/testing/naming/including/inner/module/files/purpose/helper/jquery-ui-bootstrap/images/ui-bg_flat_0_aaaaaa_40x100.png"));
+		$this->assertTrue(file_exists("$dir/testing/naming/including/inner/module/files/purpose/helper/jquery-ui-bootstrap/images/ui-bg_highlight-soft_75_cccccc_1x100.png"));
+		$this->assertTrue(file_exists("$dir/testing/naming/including/inner/module/files/purpose/helper/jquery-ui-bootstrap/images/ui-bg_inset-soft_95_fef1ec_1x100.png"));
+		$this->removeTempDir();
 	}
 
 	private function check($dir) {
